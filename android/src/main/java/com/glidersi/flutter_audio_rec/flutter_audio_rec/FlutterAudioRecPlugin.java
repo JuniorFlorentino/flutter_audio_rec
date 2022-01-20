@@ -411,4 +411,9 @@ public class FlutterAudioRecPlugin implements
     long duration = mDataSize / (mSampleRate * 2 * 1);
     return (int) duration;
   }
+
+  @Override
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    channel.setMethodCallHandler(null);
+  }
 }
