@@ -62,10 +62,34 @@ public class FlutterAudioRecPlugin implements
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    if (call.method.equals("getPlatformVersion")) {
-      result.success("Android " + android.os.Build.VERSION.RELEASE);
-    } else {
-      result.notImplemented();
+    // Log.d(LOG_NAME, "calling " + call.method);
+    _result = result;
+
+    switch (call.method) {
+      case "hasPermissions":
+        handleHasPermission();
+        break;
+      case "init":
+        handleInit(call, result);
+        break;
+      case "current":
+        handleCurrent(call, result);
+        break;
+      case "start":
+        handleStart(call, result);
+        break;
+      case "pause":
+        handlePause(call, result);
+        break;
+      case "resume":
+        handleResume(call, result);
+        break;
+      case "stop":
+        handleStop(call, result);
+        break;
+      default:
+        result.notImplemented();
+        break;
     }
   }
 
@@ -108,39 +132,6 @@ public class FlutterAudioRecPlugin implements
     } else {
       return ContextCompat.checkSelfPermission(registrar.context(),
           Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED;
-    }
-  }
-
-  @Override
-  public void onMethodCall(MethodCall call, Result result) {
-    // Log.d(LOG_NAME, "calling " + call.method);
-    _result = result;
-
-    switch (call.method) {
-      case "hasPermissions":
-        handleHasPermission();
-        break;
-      case "init":
-        handleInit(call, result);
-        break;
-      case "current":
-        handleCurrent(call, result);
-        break;
-      case "start":
-        handleStart(call, result);
-        break;
-      case "pause":
-        handlePause(call, result);
-        break;
-      case "resume":
-        handleResume(call, result);
-        break;
-      case "stop":
-        handleStop(call, result);
-        break;
-      default:
-        result.notImplemented();
-        break;
     }
   }
 
