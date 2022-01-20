@@ -2,12 +2,11 @@ package com.glidersi.flutter_audio_rec.flutter_audio_rec;
 
 import androidx.annotation.NonNull;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
-import io.flutter.plugin.common.PluginRegistry;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;
@@ -27,7 +26,8 @@ import java.util.HashMap;
 import java.util.Arrays;
 import java.util.List;
 
-public class FlutterAudioRecorder2Plugin implements MethodCallHandler, PluginRegistry.RequestPermissionsResultListener {
+public class FlutterAudioRecPlugin implements
+    FlutterPlugin, MethodCallHandler, PluginRegistry.RequestPermissionsResultListener {
   private static final String LOG_NAME = "AndroidAudioRec";
   private static final int PERMISSIONS_REQUEST_RECORD_AUDIO = 200;
   private static final byte RECORDER_BPP = 16; // we use 16bit
@@ -49,10 +49,10 @@ public class FlutterAudioRecorder2Plugin implements MethodCallHandler, PluginReg
   public static void registerWith(Registrar registrar) {
 
     final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_audio_rec");
-    channel.setMethodCallHandler(new FlutterAudioRecorder2Plugin(registrar));
+    channel.setMethodCallHandler(new FlutterAudioRecPlugin(registrar));
   }
 
-  public FlutterAudioRecorder2Plugin(Registrar registrar) {
+  public FlutterAudioRecPlugin(Registrar registrar) {
     this.registrar = registrar;
     this.registrar.addRequestPermissionsResultListener(this);
   }
