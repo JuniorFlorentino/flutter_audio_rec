@@ -52,15 +52,26 @@ public class FlutterAudioRecPlugin implements
   private Result _result;
 
   /** Plugin registration. */
-  public static void registerWith(Registrar registrar) {
+  private MethodChannel channel;
 
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "flutter_audio_rec");
-    channel.setMethodCallHandler(new FlutterAudioRecPlugin(registrar));
+  @Override
+  public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+    channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "flutter_audio_rec");
+    channel.setMethodCallHandler(this);
   }
 
-  public FlutterAudioRecPlugin(Registrar registrar) {
-    this.registrar = registrar;
-    this.registrar.addRequestPermissionsResultListener(this);
+  @Override
+  public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+    if (call.method.equals("getPlatformVersion")) {
+      result.success("Android " + android.os.Build.VERSION.RELEASE);
+    } else {
+      result.notImplemented();
+    }
+  }
+
+  @Override
+  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+    channel.setMethodCallHandler(null);
   }
 
   @Override
@@ -412,8 +423,4 @@ public class FlutterAudioRecPlugin implements
     return (int) duration;
   }
 
-  @Override
-  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-    channel.setMethodCallHandler(null);
-  }
 }
