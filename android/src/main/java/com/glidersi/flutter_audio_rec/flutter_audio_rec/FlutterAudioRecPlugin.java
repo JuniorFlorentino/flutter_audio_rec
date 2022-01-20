@@ -17,6 +17,8 @@ import android.media.AudioRecord;
 import android.media.MediaRecorder;
 import android.os.Build.VERSION;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import android.util.Log;
 
 import java.io.File;
